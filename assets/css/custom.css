@@ -1,0 +1,76 @@
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body {
+  font-size: .875rem;
+  background-color: #ecf0f5;
+}
+
+main > .container {
+    padding: 60px 15px 15px;
+}
+  
+.footer {
+  background-color: #343a40;
+}
+  
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.login {
+  width: 20rem;
+  position: absolute; /* or absolute */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dropdown-menu {
+  font-size: .875rem;
+}
+
+.dropdown .dropdown-menu .dropdown-item:active, .dropdown .dropdown-menu .dropdown-item:hover{
+  background-color: #212529 !important; 
+  color:#fff;
+}
+
+a, a:focus, a:hover {
+  outline: 0 none !important;
+}
+
+.span-invalido {
+  color: rgb(185, 74, 72);
+}
+
+.pagination-info {
+  font-size: .875rem;
+}
+
+.pagination-detail {
+  font-size: .875rem;
+}
+
+.pagination .page-item.active .page-link { border:1px solid #6c757d; background-color: #6c757d;}
+.page-link { color: #6c757d;}
+.page-link:focus {box-shadow: 0 0 0 .2rem rgba(165, 168, 171, 0.3);}
+.page-link:hover { color:#6c757d;}
+
+.pagination .page-link {
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
+.btn-group > .btn {
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+}
+
+#horas-realizadas, #card-horas-realizadas {
+    display: none;
+}
