@@ -38,7 +38,6 @@ class Atividade extends CI_Controller {
 
     public function adicionar(){
         $data['acao'] = 'adicionar';
-        $data['nivel'] = USUARIO_NIVEL;
         $data['categorias'] = $this->mod_categoria->getAll();
         $data['modalidades'] = $this->mod_modalidade->getAll();
         $data['alunos'] = $this->mod_aluno->getAll();

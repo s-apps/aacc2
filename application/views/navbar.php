@@ -6,7 +6,14 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ constant('BASE_URL') }}admin/dashboard"><i class="fas fa-home"></i></a>
         </li>
-        <li class="nav-item dropdown"{% if constant('USUARIO_NIVEL') == 1 %} style="display:none;"{% endif %}>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lançamentos</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown02">
+                <a class="dropdown-item" href="{{ constant('BASE_URL') }}atividade"><i class="fas fa-cubes"></i> Atividades</a>
+            </div>
+        </li>
+        {% if constant('USUARIO_NIVEL') == 0 %}
+        <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>Cadastros</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
                 <a class="dropdown-item" href="{{ constant('BASE_URL') }}admin/categoria"><i class="fas fa-th-large"></i> Categorias</a>
@@ -19,17 +26,12 @@
             </div>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lançamentos</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown02">
-                <a class="dropdown-item" href="{{ constant('BASE_URL') }}atividade"><i class="fas fa-cubes"></i> Atividades</a>
-            </div>
-        </li>
-        <li class="nav-item dropdown"{% if constant('USUARIO_NIVEL') == 1 %} style="display:none;"{% endif %}>
             <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Relatórios</a>
             <div class="dropdown-menu" aria-labelledby="dropdown02">
                 <a class="dropdown-item" href="{{ constant('BASE_URL') }}admin/aluno/horas-realizadas-aluno"><i class="fas fa-clock"></i> Aluno - Horas Realizadas</a>
             </div>
         </li>
+        {% endif %}
     </ul>
     <ul class="navbar-nav">
         <li class="nav-item">

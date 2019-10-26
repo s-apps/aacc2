@@ -114,11 +114,11 @@ window.icones =
             detailClose: "fas fa-chevron-circle-down fa-lg"
         }
 
-$("#formulario-atividade").on("submit", function(){
-    
-});        
-
 $("#btn-cancelar").on("click", function(){
     $(".btn-cancelar-loading").show();
     window.location.href = base_url + "atividade";
+});        
+
+$("#formulario-atividade").on("submit", function(){
+    var acao = $("#acao").val();
 });        

@@ -23,8 +23,6 @@
                                 <span class="span-invalido data_atividade-feed"></span>
                             </div>
                         </div>
-                    <!-- </div> -->
-                    <!-- <div class="row"> -->
                         <div class="col-4">
                             <div class="form-group">
                                 <label for="horas_inicio">Horas início</label>
@@ -66,6 +64,8 @@
                         </select>
                         <span class="span-invalido aluno-feed"></span>
                     </div>
+                    {% else %}
+
                     {% endif %}
                     <div class="form-group categoria-feedback">
                         <label for="categoria_id">Categoria</label>
