@@ -26,7 +26,7 @@
         </div>
         {% else %}
         <div class="container">
-            {% include 'navbar.php' %}
+            {% include 'layout/navbar.php' %}
         </div>
         {% endif %}
       </nav>
