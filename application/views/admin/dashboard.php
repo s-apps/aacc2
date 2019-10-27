@@ -20,15 +20,17 @@
     <div class="card">
       <div class="card-header py-2 bg-secondary text-white">Configurações</div>
       <div class="card-body">
-      <div class="input-group input-group-sm">
-      <div class="input-group-prepend">
-    <span class="input-group-text bg-info text-white border-0">Limite de horas atividades</span>
-  </div>
-  <input type="text" class="form-control" aria-describedby="button-add-limite" id="limite">
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary bg-secondary text-white border-0" type="button" id="button-add-limite"><i class="fas fa-save"></i> Salvar <span class="spinner-border spinner-border-sm btn-salvar-limite-loading"></span></button>
-  </div>
-</div>      
+        <div class="row">
+          <div class="col-md-6 offset-md-0">
+            <label for="limite">Limite de horas atividades</label>
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" aria-describedby="button-add-limite" id="limite">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary bg-secondary text-white border-0" type="button" id="button-add-limite"><i class="fas fa-save"></i> Salvar <span class="spinner-border spinner-border-sm btn-salvar-limite-loading"></span></button>
+              </div>
+            </div> 
+          </div>
+        </div>     
       </div>
     </div>
   </div>
