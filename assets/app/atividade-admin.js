@@ -41,7 +41,31 @@ $(function(){
         formatLoadingMessage: function () {
             return "<span style='font-size: 0.85rem;margin: 5px;'>Carregando</span>";
         }              
-    });      
+    });    
+    $("#dataatividade").datetimepicker({
+      format: "L",
+      date: moment(),
+      allowInputToggle: true
+    });  
+    $("#horasinicio").datetimepicker({
+      format: "HH:mm",
+      allowInputToggle: true
+    });    
+    $("#horastermino").datetimepicker({
+      format: "HH:mm",
+      allowInputToggle: true
+    });    
+    $("#aluno_ra").select2({
+      placeholder: "Selecione o aluno",
+      theme: "bootstrap",
+      width: "100%"
+    });
+    $("#categoria_id").select2({
+      placeholder: "Selecione a categoria",
+      theme: "bootstrap",
+      width: "100%"
+    });
+
 });
 
 function detalhesFormatter(index, row){

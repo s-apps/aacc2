@@ -19,6 +19,8 @@ class Atividade extends CI_Controller {
         define('USUARIO_NOME', getNomeUsuario());
         $this->load->helper('converte_data');
         $this->load->model('admin/mod_atividade');
+        $this->load->model('admin/mod_aluno');
+        $this->load->model('admin/mod_categoria');
     }
     
     public function index(){
@@ -35,6 +37,13 @@ class Atividade extends CI_Controller {
         $atividades = $this->mod_atividade->listar($limit, $offset, $sort, $order, $search);
         $data = array('total' => $total, 'atividades' => $atividades);
         echo json_encode($data);
+    }
+
+    public function adicionar(){
+        $data['acao'] = 'adicionar';
+        $data['alunos'] = $this->mod_aluno->getAll();
+        $data['categorias'] = $this->mod_categoria->getAll();
+        $this->load->view('admin/formulario-atividade', $data);
     }
 
 }

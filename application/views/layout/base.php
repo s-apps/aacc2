@@ -1,6 +1,6 @@
 {% if constant('BASEPATH') is defined %}
 <!doctype html>
-<html lang="pt-BR" class="h-100">
+<html lang="pt-br" class="h-100">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
