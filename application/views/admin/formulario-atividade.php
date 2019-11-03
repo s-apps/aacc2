@@ -31,7 +31,7 @@
                             <div class="form-group">
                                 <label for="horas_inicio">Horas início</label>
                                 <div class="input-group date" id="horasinicio" data-target-input="nearest">
-                                    <input type="text" class="form-control form-control-sm datetimepicker-input" id="horas_inicio" data-target="#horasinicio" />
+                                    <input type="text" class="form-control form-control-sm datetimepicker-input" id="horas_inicio" data-target="#horasinicio" value="{% if atividade.horas_inicio is defined %}{{ atividade.horas_inicio }}{% endif %}"/>
                                     <div class="input-group-append" data-target="#horasinicio" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="far fa-clock"></i></div>
                                     </div>
@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <label for="horas_termino">Horas término</label>
                                 <div class="input-group date" id="horastermino" data-target-input="nearest">
-                                    <input type="text" class="form-control form-control-sm datetimepicker-input" id="horas_termino" data-target="#horastermino" />
+                                    <input type="text" class="form-control form-control-sm datetimepicker-input" id="horas_termino" data-target="#horastermino" value="{% if atividade.horas_termino is defined %}{{ atividade.horas_termino }}{% endif %}"/>
                                     <div class="input-group-append" data-target="#horastermino" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="far fa-clock"></i></div>
                                     </div>
@@ -57,7 +57,7 @@
                         <select id="aluno_ra">
                             <option></option>
                             {% for aluno in alunos %}
-                            <option value="{{ aluno.aluno_ra }}">{{ aluno.nome }} | {{ aluno.aluno_ra }}</option>
+                            <option value="{{ aluno.aluno_ra }}"{% if atividade.aluno_ra is defined and aluno.aluno_ra == atividade.aluno_ra %} selected="selected"{% endif %}>{{ aluno.nome }} | {{ aluno.aluno_ra }}</option>
                             {% endfor %}
                         </select>  
                         <span class="span-invalido aluno-feed"></span>
@@ -70,15 +70,15 @@
                     <div class="form-group">
                         <label for="validacao">Situação</label>
                         <select class="custom-select custom-select-sm my-1 mr-sm-2" id="validacao">
-                            <option value="0">Aguardando validação</option>
-                            <option value="1">Válido</option>
+                            <option value="0"{% if atividade.validacao is defined and atividade.validacao == 0 %} selected="selected"{% endif %}>Aguardando validação</option>
+                            <option value="1"{% if atividade.validacao is defined and atividade.validacao == 1 %} selected="selected"{% endif %}>Válido</option>
                         </select>                    
                     </div>
                     <div class="form-group categoria-feedback"> 
                         <label for="categoria_id">Categoria</label>  
                         <select id="categoria_id">
                             {% for categoria in categorias %}
-                            <option value="{{ categoria.categoria_id }}">{{ categoria.categoria }}</option>
+                            <option value="{{ categoria.categoria_id }}" {% if atividade.categoria_id is defined and atividade.categoria_id == categoria.categoria_id %} selected="selected"{% endif %}>{{ categoria.categoria }}</option>
                             {% endfor %}
                         </select>  
                         <span class="span-invalido categoria-feed"></span>
@@ -96,6 +96,7 @@
                         <span class="span-invalido comprovante-feed"></span>
                     </div>
                     <div class="form-group">
+                    <label for="imagem_comprovante">Imagem do comprovante</label> 
                         <div class="custom-file" lang="pt-br">
                             <input type="file" class="custom-file-input" id="imagem_comprovante" name="imagem_comprovante">
                             <div class="invalid-feedback">Por favor, informe a imagem do comprovante.</div>

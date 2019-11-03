@@ -1,7 +1,11 @@
 var $table = $("#atividades");
 var base_url = "http://localhost:8000/";
+var url = window.location.href;
+var segmentos = url.split('/');
 
 $(function(){
+    // var lastsegment = segmentos[segmentos.length-1];
+    // console.log(segmentos[segmentos.length-1]);
     $table.bootstrapTable({
         url: base_url + "admin/atividade/listar",
         queryParamsType: "limit",
@@ -42,11 +46,19 @@ $(function(){
             return "<span style='font-size: 0.85rem;margin: 5px;'>Carregando</span>";
         }              
     });    
-    $("#dataatividade").datetimepicker({
-      format: "L",
-      date: moment(),
-      allowInputToggle: true
-    });  
+    if(segmentos[segmentos.length-1] == 'adicionar'){
+      $("#dataatividade").datetimepicker({
+        format: "L",
+        date: moment(),
+        allowInputToggle: true
+      });
+    }  
+    if(segmentos[segmentos.length-2] == 'editar'){
+      $("#dataatividade").datetimepicker({
+        format: "L",
+        allowInputToggle: true
+      });
+    }
     $("#horasinicio").datetimepicker({
       format: "HH:mm",
       allowInputToggle: true
@@ -73,7 +85,9 @@ $(function(){
       theme: "bootstrap",
       width: "100%"
     });
-    getModalidadesByCategoria();
+    if(! segmentos[segmentos.length-1] == "atividade"){
+      getModalidadesByCategoria();
+    }
 });
 
 function detalhesFormatter(index, row){
@@ -123,8 +137,10 @@ function getModalidadesByCategoria(){
       var newOption = new Option(value.modalidade, value.modalidade_id, true, true);
       $("#modalidade_id").append(newOption).trigger("change");
     });
-    $("#modalidade_id").prop("selectedIndex", 0).change();
-    getComprovanteByModalidade();
+    if(segmentos[segmentos.length-2] == "adicionar"){
+      $("#modalidade_id").prop("selectedIndex", 0).change();
+      getComprovanteByModalidade();
+    }
   });
 }
 
@@ -166,14 +182,60 @@ $("#formulario-atividade").on("submit", function(){
   var comprovante_id = $("#comprovante_id").val();
   var imagem_comprovante = $("#imagem_comprovante").val();
   if(camposValidos(data_atividade, horas_inicio, horas_termino, aluno_ra, atividade, /*validacao, categoria_id, modalidade_id, comprovante_id,*/ imagem_comprovante)){
-    console.log("ok");
+    var data = new FormData(this);
+    data.append("acao", acao);
+    data.append("atividade_id", atividade_id);
+    data.append("data_atividade", data_atividade);
+    data.append("horas_inicio", horas_inicio);
+    data.append("horas_termino", horas_termino);
+    data.append("aluno_ra", aluno_ra);
+    data.append("atividade", atividade);
+    data.append("validacao", validacao);
+    data.append("categoria_id", categoria_id);
+    data.append("modalidade_id", modalidade_id);
+    data.append("comprovante_id", comprovante_id);
+    // data.append("imagem_comprovante", imagem_comprovante);
+    $(".btn-salvar-loading").show();
+    $.post({
+      url: base_url + "admin/atividade/salvar",
+      dataType: "JSON",
+      data: data,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(data){
+        if(data.erro.length === 0){     
+          window.location.href = base_url + "admin/atividade";
+        }else{
+          iziToast.warning({
+            close: true,
+            timeout: false,
+            position: "center",
+            animateInside: false,
+            title: "Atenção",
+            message: data.erro,
+            buttons: [
+                ["<button><b>OK</b></button>", function (instance, toast) {
+                        instance.hide({transitionOut: "fadeOut"}, toast, "button");
+                  }, true
+                ]
+            ]
+          });
+          $(".btn-salvar-loading").hide();
+          return false;
+        }
+      },
+      error: function(){
+        $(".btn-salvar-loading").hide();
+        console.log("erro servidor");
+      }
+    });   
+    return false; 
   }
-
-
   return false;
 });
 
-function camposValidos(data_atividade, horas_inicio, horas_termino, aluno_ra, atividade, validacao, categoria_id, modalidade_id, comprovante_id, imagem_comprovante){
+function camposValidos(data_atividade, horas_inicio, horas_termino, aluno_ra, atividade/*, validacao, categoria_id, modalidade_id, comprovante_id, imagem_comprovante*/){
   var dataValida = moment(data_atividade, "DD/MM/YYYY", true).isValid();
   var horasInicio = moment(horas_inicio, "HH:mm", true).isValid();
   var horasTermino = moment(horas_termino, "HH:mm", true).isValid();
@@ -205,6 +267,22 @@ function camposValidos(data_atividade, horas_inicio, horas_termino, aluno_ra, at
     $(".horas_termino-feed").html("<small>Horas término inválida.</small>");
     $(".horas_termino-feed").show();
     return false;
+  }else if(horasValidas(horas_inicio, horas_termino)){
+    iziToast.warning({
+      close: true,
+      timeout: false,
+      position: "center",
+      animateInside: false,
+      title: "Atenção",
+      message: "Horas término não pode ser menor ou igual horas início",
+      buttons: [
+          ["<button><b>OK</b></button>", function (instance, toast) {
+                  instance.hide({transitionOut: "fadeOut"}, toast, "button");
+            }, true
+          ]
+      ]
+    });
+    return false;
   }else if(aluno_ra.length === 0){
     $(".aluno-feedback").addClass("has-error");
     $("#aluno_ra").focus();
@@ -215,17 +293,34 @@ function camposValidos(data_atividade, horas_inicio, horas_termino, aluno_ra, at
     $("#atividade").addClass("is-invalid");
     $("#atividade").focus();
     return false;
-  }else if(typeof imagem_comprovante === "undefined"){
+  }else if($("#imagem_comprovante")[0].files.length === 0){
     $("#imagem_comprovante").addClass("is-invalid");
     $("#imagem_comprovante").focus();
     return false;
-  }else{
-
   }
-  return true;
+    return true;
 }
 
 $(".custom-file-input").on("change", function () {
   var fileName = $(this).val().split("\\").pop();
   $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 });
+
+function horasValidas(horas_inicio, horas_termino){
+  var split1 = horas_inicio.split(":");
+  var split2 = horas_termino.split(":");
+  var hora1 = (split1[0] * 60) + parseInt(split1[1]);
+  var hora2 = (split2[0] * 60) + parseInt(split2[1]);
+  return hora2 <= hora1;
+}
+
+$("#btn-editar").on("click", function(){
+  var ids = getIdSelections();
+  window.location.href = base_url + "admin/atividade/editar/" + ids[0];
+});
+
+function getIdSelections() {
+  return $.map($table.bootstrapTable("getSelections"), function (row) {
+    return row.atividade_id
+  });
+}
