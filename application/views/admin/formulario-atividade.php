@@ -7,7 +7,7 @@
         <i class="fas fa-cubes"></i> Atividades - {% if acao == 'adicionar' %}adicionando{% elseif acao == 'editar' %}editando{% else %}listando{% endif %}
     </div>
     <div class="card-body">
-        <form id="formulario-atividade">
+        <form id="formulario-atividade" enctype="multipart/form-data" method="POST">
             <div class="row">
                 <div class="col-6">
                     <input type="hidden" id="acao" name="acao" value="{{ acao }}">
@@ -52,11 +52,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="atividade">Atividade</label>
-                        <textarea class="form-control form-control-sm" rows="3" placeholder="Informe a atividade" id="atividade" name="atividade">{% if atividade.atividade is defined %}{{ atividade.atividade }}{% endif %}</textarea>
-                        <div class="invalid-feedback">Por favor, informe a atividade.</div>
-                    </div>
                     <div class="form-group aluno-feedback"> 
                         <label for="aluno_ra">Aluno | RA</label>  
                         <select id="aluno_ra">
@@ -67,15 +62,10 @@
                         </select>  
                         <span class="span-invalido aluno-feed"></span>
                     </div>
-                    <div class="form-group categoria-feedback"> 
-                        <label for="categoria_id">Categoria</label>  
-                        <select id="categoria_id">
-                            <option></option>
-                            {% for categoria in categorias %}
-                            <option value="{{ categoria.categoria_id }}">{{ categoria.categoria }}</option>
-                            {% endfor %}
-                        </select>  
-                        <span class="span-invalido categoria-feed"></span>
+                    <div class="form-group">
+                        <label for="atividade">Atividade</label>
+                        <textarea class="form-control form-control-sm" rows="3" placeholder="Informe a atividade" id="atividade" name="atividade">{% if atividade.atividade is defined %}{{ atividade.atividade }}{% endif %}</textarea>
+                        <div class="invalid-feedback">Por favor, informe a atividade.</div>
                     </div>
                     <div class="form-group">
                         <label for="validacao">Situação</label>
@@ -84,14 +74,34 @@
                             <option value="1">Válido</option>
                         </select>                    
                     </div>
-                    <div class="card mb-4">
-                        <div class="card-body p-3">
-                            <div class="form-group">
-                                <label for="imagem_comprovante">Imagem do comprovante</label>
-                                <input type="file" class="form-control-file" id="imagem_comprovante">
-                            </div>
+                    <div class="form-group categoria-feedback"> 
+                        <label for="categoria_id">Categoria</label>  
+                        <select id="categoria_id">
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.categoria_id }}">{{ categoria.categoria }}</option>
+                            {% endfor %}
+                        </select>  
+                        <span class="span-invalido categoria-feed"></span>
+                    </div>
+                    <div class="form-group modalidade-feedback"> 
+                        <label for="modalidade_id">Modalidade</label>  
+                        <select id="modalidade_id">
+                        </select>  
+                        <span class="span-invalido modalidade-feed"></span>
+                    </div>
+                    <div class="form-group comprovante-feedback"> 
+                        <label for="comprovante_id">Comprovante</label>  
+                        <select id="comprovante_id">
+                        </select>  
+                        <span class="span-invalido comprovante-feed"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-file" lang="pt-br">
+                            <input type="file" class="custom-file-input" id="imagem_comprovante" name="imagem_comprovante">
+                            <div class="invalid-feedback">Por favor, informe a imagem do comprovante.</div>
+                            <label class="custom-file-label" for="imagem_comprovante">Imagem do comprovante</label>
                         </div>
-                    </div>                            
+                    </div>
                 </div>    
                 <div class="col-6">
                 </div>

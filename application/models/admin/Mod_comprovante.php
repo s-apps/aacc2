@@ -57,4 +57,11 @@ class Mod_comprovante extends CI_Model {
         return $this->db->affected_rows();
     }
 
+    public function getComprovanteByModalidade($modalidade_id){
+        $this->db->select('comprovante.*');
+        $this->db->join('comprovante', 'comprovante.comprovante_id = modalidade.comprovante_id');
+        $this->db->where('modalidade.modalidade_id', $modalidade_id);
+        return $this->db->get('modalidade')->row_array();
+    }
+
 }

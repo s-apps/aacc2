@@ -21,6 +21,8 @@ class Atividade extends CI_Controller {
         $this->load->model('admin/mod_atividade');
         $this->load->model('admin/mod_aluno');
         $this->load->model('admin/mod_categoria');
+        $this->load->model('admin/mod_modalidade');
+        $this->load->model('admin/mod_comprovante');
     }
     
     public function index(){
@@ -43,7 +45,19 @@ class Atividade extends CI_Controller {
         $data['acao'] = 'adicionar';
         $data['alunos'] = $this->mod_aluno->getAll();
         $data['categorias'] = $this->mod_categoria->getAll();
+        // $data['modalidades'] = $this->mod_modalidade->getAll();
+        // $data['comprovantes'] = $this->mod_comprovante->getAll();
         $this->load->view('admin/formulario-atividade', $data);
+    }
+
+    public function getModalidadesByCategoria($categoria_id){
+        $data['modalidades'] = $this->mod_modalidade->getByCategoria($categoria_id);
+        echo json_encode($data);
+    }
+
+    public function getComprovanteByModalidade($modalidade_id){
+        $data['comprovante'] = $this->mod_comprovante->getComprovanteByModalidade($modalidade_id);
+        echo json_encode($data);
     }
 
 }
