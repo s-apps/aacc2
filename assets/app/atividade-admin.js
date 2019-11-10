@@ -169,31 +169,33 @@ $("#modalidade_id").on("change", function () {
 });
 
 $("#formulario-atividade").on("submit", function(){
-  var acao = $("#acao").val();
-  var atividade_id = (acao == "adicionar") ? 0 : $("#atividade_id").val();
-  var data_atividade = $("#data_atividade").val();
-  var horas_inicio = $("#horas_inicio").val();
-  var horas_termino = $("#horas_termino").val();
-  var aluno_ra = $("#aluno_ra").val();
-  var atividade = $("#atividade").val();
-  var validacao = $("#validacao").val();
-  var categoria_id = $("#categoria_id").val();
-  var modalidade_id = $("#modalidade_id").val();
-  var comprovante_id = $("#comprovante_id").val();
-  var imagem_comprovante = $("#imagem_comprovante").val();
-  if(camposValidos(data_atividade, horas_inicio, horas_termino, aluno_ra, atividade, /*validacao, categoria_id, modalidade_id, comprovante_id,*/ imagem_comprovante)){
+  var atividade = {
+    acao: $("#acao").val(),
+    atividade_id: (acao == "adicionar") ? 0 : $("#atividade_id").val(),
+    data_atividade: $("#data_atividade").val(),
+    horas_inicio: $("#horas_inicio").val(),
+    horas_termino: $("#horas_termino").val(),
+    aluno_ra: $("#aluno_ra").val(),
+    atividade: $("#atividade").val(),
+    validacao: $("#validacao").val(),
+    categoria_id: $("#categoria_id").val(),
+    modalidade_id: $("#modalidade_id").val(),
+    comprovante_id: $("#comprovante_id").val(),
+    imagem_comprovante: $("#imagem_comprovante").val()
+  }
+  if(camposValidos(atividade)){
     var data = new FormData(this);
-    data.append("acao", acao);
-    data.append("atividade_id", atividade_id);
-    data.append("data_atividade", data_atividade);
-    data.append("horas_inicio", horas_inicio);
-    data.append("horas_termino", horas_termino);
-    data.append("aluno_ra", aluno_ra);
-    data.append("atividade", atividade);
-    data.append("validacao", validacao);
-    data.append("categoria_id", categoria_id);
-    data.append("modalidade_id", modalidade_id);
-    data.append("comprovante_id", comprovante_id);
+    data.append("acao", atividade.acao);
+    data.append("atividade_id", atividade.atividade_id);
+    data.append("data_atividade", atividade.data_atividade);
+    data.append("horas_inicio", atividade.horas_inicio);
+    data.append("horas_termino", atividade.horas_termino);
+    data.append("aluno_ra", atividade.aluno_ra);
+    data.append("atividade", atividade.atividade);
+    data.append("validacao", atividade.validacao);
+    data.append("categoria_id", atividade.categoria_id);
+    data.append("modalidade_id", atividade.modalidade_id);
+    data.append("comprovante_id", atividade.comprovante_id);
     // data.append("imagem_comprovante", imagem_comprovante);
     $(".btn-salvar-loading").show();
     $.post({
@@ -207,22 +209,8 @@ $("#formulario-atividade").on("submit", function(){
         if(data.erro.length === 0){     
           window.location.href = base_url + "admin/atividade";
         }else{
-          iziToast.warning({
-            close: true,
-            timeout: false,
-            position: "center",
-            animateInside: false,
-            title: "Atenção",
-            message: data.erro,
-            buttons: [
-                ["<button><b>OK</b></button>", function (instance, toast) {
-                        instance.hide({transitionOut: "fadeOut"}, toast, "button");
-                  }, true
-                ]
-            ]
-          });
           $(".btn-salvar-loading").hide();
-          return false;
+          exibirMensagemDeErro(data.erro);
         }
       },
       error: function(){
@@ -235,10 +223,10 @@ $("#formulario-atividade").on("submit", function(){
   return false;
 });
 
-function camposValidos(data_atividade, horas_inicio, horas_termino, aluno_ra, atividade/*, validacao, categoria_id, modalidade_id, comprovante_id, imagem_comprovante*/){
-  var dataValida = moment(data_atividade, "DD/MM/YYYY", true).isValid();
-  var horasInicio = moment(horas_inicio, "HH:mm", true).isValid();
-  var horasTermino = moment(horas_termino, "HH:mm", true).isValid();
+function camposValidos(atividade){
+  var dataValida = moment(atividade.data_atividade, "DD/MM/YYYY", true).isValid();
+  var horasInicio = moment(atividade.horas_inicio, "HH:mm", true).isValid();
+  var horasTermino = moment(atividade.horas_termino, "HH:mm", true).isValid();
   $("#data_atividade").removeClass("is-invalid");
   $(".data_atividade-feed").hide();
   $("#horas_inicio").removeClass("is-invalid");
@@ -249,47 +237,35 @@ function camposValidos(data_atividade, horas_inicio, horas_termino, aluno_ra, at
   $(".aluno-feed").hide();
   $("#atividade").removeClass("is-invalid");
   $("#imagem_comprovante").removeClass("is-invalid");
-  if(data_atividade.length === 0 || ! dataValida){
+  if(atividade.data_atividade.length === 0 || ! dataValida){
     $("#data_atividade").addClass("is-invalid");
     $("#data_atividade").focus();
     $(".data_atividade-feed").html("<small>Data inválida.</small>");
     $(".data_atividade-feed").show();    
     return false;
-  }else if(horas_inicio.length === 0 || ! horasInicio){
+  }else if(atividade.horas_inicio.length === 0 || ! horasInicio){
     $("#horas_inicio").addClass("is-invalid");
     $("#horas_inicio").focus();
     $(".horas_inicio-feed").html("<small>Horas início inválida.</small>");
     $(".horas_inicio-feed").show();    
     return false;
-  }else if(horas_termino.length === 0 || ! horasTermino){
+  }else if(atividade.horas_termino.length === 0 || ! horasTermino){
     $("#horas_termino").addClass("is-invalid");
     $("#horas_termino").focus();
     $(".horas_termino-feed").html("<small>Horas término inválida.</small>");
     $(".horas_termino-feed").show();
     return false;
-  }else if(horasValidas(horas_inicio, horas_termino)){
-    iziToast.warning({
-      close: true,
-      timeout: false,
-      position: "center",
-      animateInside: false,
-      title: "Atenção",
-      message: "Horas término não pode ser menor ou igual horas início",
-      buttons: [
-          ["<button><b>OK</b></button>", function (instance, toast) {
-                  instance.hide({transitionOut: "fadeOut"}, toast, "button");
-            }, true
-          ]
-      ]
-    });
+  }else if(horasValidas(atividade.horas_inicio, atividade.horas_termino)){
+    $(".btn-salvar-loading").hide();
+    exibirMensagemDeErro("Horas término não pode ser menor ou igual horas início");
     return false;
-  }else if(aluno_ra.length === 0){
+  }else if(atividade.aluno_ra.length === 0){
     $(".aluno-feedback").addClass("has-error");
     $("#aluno_ra").focus();
     $(".aluno-feed").html("<small>Por favor, informe o aluno.</small>");
     $(".aluno-feed").show();
     return false;    
-  }else if(atividade.length === 0){
+  }else if(atividade.atividade.length === 0){
     $("#atividade").addClass("is-invalid");
     $("#atividade").focus();
     return false;
@@ -322,5 +298,22 @@ $("#btn-editar").on("click", function(){
 function getIdSelections() {
   return $.map($table.bootstrapTable("getSelections"), function (row) {
     return row.atividade_id
+  });
+}
+
+function exibirMensagemDeErro(mensagem){
+  iziToast.warning({
+    close: true,
+    timeout: false,
+    position: "center",
+    animateInside: false,
+    title: "Atenção",
+    message: mensagem,
+    buttons: [
+        ["<button><b>OK</b></button>", function (instance, toast) {
+                instance.hide({transitionOut: "fadeOut"}, toast, "button");
+          }, true
+        ]
+    ]
   });
 }
